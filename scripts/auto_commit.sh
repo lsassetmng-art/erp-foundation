@@ -1,25 +1,48 @@
 #!/data/data/com.termux/files/usr/bin/bash
 set -e
 
-REPO="$HOME/erp-foundation"
-cd "$REPO"
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT_DIR"
 
-echo "== Generate UseCases =="
-python3 tools/generate_usecases.py
+BRANCH="main"
+LOG_DIR="$ROOT_DIR/logs"
+LOG_FILE="$LOG_DIR/auto_commit.log"
+TIMESTAMP="$(date '+%Y-%m-%d %H:%M:%S')"
 
-# company_id ガード（Fail Fast）
-if grep -R "company_id" app/src/main/java >/dev/null 2>&1; then
-  echo "ERROR: company_id detected in generated code"
+mkdir -p "$LOG_DIR"
+
+echo "---- $TIMESTAMP START ----" >> "$LOG_FILE"
+
+# Git リポジトリ確認
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "ERROR: not a git repo" >> "$LOG_FILE"
   exit 1
 fi
 
-if [ -z "$(git status --porcelain)" ]; then
-  echo "== No changes. Skip commit. =="
+# ブランチ固定
+CURRENT_BRANCH="$(git branch --show-current)"
+if [ "$CURRENT_BRANCH" != "$BRANCH" ]; then
+  echo "ERROR: branch is $CURRENT_BRANCH (expected $BRANCH)" >> "$LOG_FILE"
+  exit 1
+fi
+
+# 変更確認
+if git diff --quiet && git diff --cached --quiet; then
+  echo "No changes, exit" >> "$LOG_FILE"
   exit 0
 fi
 
-git add -A
-git commit -m "ai: generate usecases from yaml"
+# add & commit
+git add .
 
-echo "== Committed =="
-git --no-pager log -1 --oneline
+git commit -m "auto: update generated files ($TIMESTAMP)" >> "$LOG_FILE" 2>&1
+
+# push（upstream 自動対応）
+if ! git rev-parse --abbrev-ref --symbolic-full-name "@{u}" >/dev/null 2>&1; then
+  git push -u origin "$BRANCH" >> "$LOG_FILE" 2>&1
+else
+  git push >> "$LOG_FILE" 2>&1
+fi
+
+echo "PUSH OK" >> "$LOG_FILE"
+echo "---- END ----" >> "$LOG_FILE"

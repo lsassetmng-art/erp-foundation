@@ -1,55 +1,56 @@
 package foundation.session;
 
-import foundation.guard.Preconditions;
-
 /**
- * SessionManager (Source of truth for session state)
+ * SessionManager
  *
- * Hard rules:
- * - company_id is managed ONLY here
- * - company_id must NOT be exposed publicly (RLS assumed)
- * - Fail-fast when uninitialized
+ * 方針:
+ * - company_id はここでのみ保持
+ * - 他クラスは company_id に直接アクセス禁止
+ * - Supabase RLS 前提
  */
 public final class SessionManager {
 
-    private static volatile SessionManager INSTANCE;
+    private static SessionManager instance;
 
-    private final String companyId; // hidden (package-private accessor only)
-    private final String userId;
+    private String accessToken;
+    private String userId;
+    private String companyId;
 
-    private SessionManager(String companyId, String userId) {
-        Preconditions.notEmpty(companyId, "companyId");
-        // userId may be null depending on auth strategy
-        this.companyId = companyId;
-        this.userId = userId;
-    }
+    private SessionManager() {}
 
-    /** Initialize once after login/auth success. Idempotent. */
-    public static synchronized void init(String companyId, String userId) {
-        if (INSTANCE != null) return;
-        INSTANCE = new SessionManager(companyId, userId);
-    }
-
-    /** Require initialized session. */
-    public static SessionManager get() {
-        if (INSTANCE == null) {
-            throw new IllegalStateException("SessionManager not initialized");
+    public static synchronized SessionManager getInstance() {
+        if (instance == null) {
+            instance = new SessionManager();
         }
-        return INSTANCE;
+        return instance;
     }
 
-    /** Clear session (logout). */
-    public static synchronized void clear() {
-        INSTANCE = null;
+    public void init(String accessToken, String userId, String companyId) {
+        this.accessToken = accessToken;
+        this.userId = userId;
+        this.companyId = companyId;
     }
 
-    /** Visible for session-related internal components ONLY (package-private). */
-    String internalCompanyId() {
+    public boolean isLoggedIn() {
+        return accessToken != null && !accessToken.isEmpty();
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    // ⚠ company_id は外部に公開しない
+    String getCompanyIdInternal() {
         return companyId;
     }
 
-    /** User id is allowed to be public if needed. */
-    public String userId() {
-        return userId;
+    public void clear() {
+        accessToken = null;
+        userId = null;
+        companyId = null;
     }
 }
