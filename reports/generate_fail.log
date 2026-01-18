@@ -1,0 +1,63 @@
+Mon Jan 19 08:06:36 JST 2026 : GENERATE FAILED
+On branch main
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   app/src/main/java/app/usecase/order/CreateOrderUseCase.java
+	modified:   app/src/main/java/foundation/repository/RpcCreateOrderRepository.java
+	modified:   logs/auto_commit.log
+	modified:   scripts/cron_full_generate.sh
+	modified:   scripts/full_generate.sh
+	modified:   scripts/setup_autonomous_block.sh
+	modified:   spec/usecases.schema.yaml
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	app/src/main/java/app/usecase/auth/
+	app/src/main/java/app/usecase/billing/
+	app/src/main/java/app/usecase/order/ConfirmOrderInput.java
+	app/src/main/java/app/usecase/order/ConfirmOrderRepository.java
+	app/src/main/java/app/usecase/order/ConfirmOrderResult.java
+	app/src/main/java/app/usecase/order/ConfirmOrderUseCase.java
+	app/src/main/java/app/usecase/order/GetOrderListInput.java
+	app/src/main/java/app/usecase/order/GetOrderListRepository.java
+	app/src/main/java/app/usecase/order/GetOrderListResult.java
+	app/src/main/java/app/usecase/order/GetOrderListUseCase.java
+	app/src/main/java/app/usecase/shipping/
+	app/src/main/java/foundation/repository/RpcAuthenticateUserRepository.java
+	app/src/main/java/foundation/repository/RpcConfirmOrderRepository.java
+	app/src/main/java/foundation/repository/RpcCreateInvoiceRepository.java
+	app/src/main/java/foundation/repository/RpcCreateShippingRepository.java
+	app/src/main/java/foundation/repository/RpcGetInvoiceListRepository.java
+	app/src/main/java/foundation/repository/RpcGetOrderListRepository.java
+	app/src/main/java/foundation/repository/RpcLogoutRepository.java
+	app/src/main/java/test/auth/
+	app/src/main/java/test/billing/
+	app/src/main/java/test/order/ConfirmOrderRpcNegativeTest.java
+	app/src/main/java/test/order/ConfirmOrderRpcTest.java
+	app/src/main/java/test/order/GetOrderListRpcNegativeTest.java
+	app/src/main/java/test/order/GetOrderListRpcTest.java
+	app/src/main/java/test/shipping/
+	app/src/main/java/validation/auth/
+	app/src/main/java/validation/billing/
+	app/src/main/java/validation/order/ConfirmOrderSchemaValidator.java
+	app/src/main/java/validation/order/GetOrderListSchemaValidator.java
+	app/src/main/java/validation/shipping/
+	reports/
+	scripts/ai_summarize_diff.sh
+	scripts/approve_and_resume.sh
+	scripts/check_spec_diff.sh
+	scripts/create_github_issue_from_policy.sh
+	scripts/generate_leader_report.sh
+	scripts/generate_policy_next.sh
+	scripts/generate_spec_diff_summary.sh
+	scripts/report_fail.sh
+	scripts/review_usecases.sh
+	scripts/rollback.sh
+	spec/.hash
+	spec/pm_ai/
+	spec/scripts/
+	spec/tools/
+	tools/pm_usecase_ai.py
+
+no changes added to commit (use "git add" and/or "git commit -a")

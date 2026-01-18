@@ -1,0 +1,23 @@
+name: full-generate
+
+on:
+  push:
+    paths:
+      - "spec/**"
+      - "tools/**"
+      - "scripts/**"
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run PM AI
+        run: python3 tools/pm_usecase_ai.py
+      - name: Review spec
+        run: bash scripts/review_usecases.sh
+      - name: Full generate
+        run: bash scripts/full_generate.sh

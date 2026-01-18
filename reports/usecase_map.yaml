@@ -1,0 +1,50 @@
+generated_at: "2026-01-19 07:41:43"
+items:
+  - requirement: |
+      ログインを行いたい
+    domain: auth
+    usecase: AuthenticateUser
+    type: command
+    status: ok
+  - requirement: |
+      ログアウトできる
+    domain: auth
+    usecase: Logout
+    type: command
+    status: ok
+  - requirement: |
+      受注を登録したい
+    domain: order
+    usecase: CreateOrder
+    type: command
+    status: ok
+  - requirement: |
+      受注を確定したい
+    domain: order
+    usecase: ConfirmOrder
+    type: command
+    status: ok
+  - requirement: |
+      受注一覧を見たい
+    domain: order
+    usecase: GetOrderList
+    type: query
+    status: ok
+  - requirement: |
+      出荷を登録したい
+    domain: shipping
+    usecase: CreateShipping
+    type: command
+    status: ok
+  - requirement: |
+      請求書を作成したい
+    domain: billing
+    usecase: CreateInvoice
+    type: command
+    status: ok
+  - requirement: |
+      請求書一覧を確認したい
+    domain: billing
+    usecase: GetInvoiceList
+    type: query
+    status: ok

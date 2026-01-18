@@ -1,0 +1,30 @@
+pm_usecase_ai:
+  naming:
+    style: PascalCase
+    pattern: "^(Create|Get|Update|Delete|Confirm|Cancel|Finalize|Complete|Mark)[A-Z][A-Za-z0-9]*$"
+  types:
+    command_prefixes: ["Create","Update","Delete","Confirm","Cancel","Finalize","Complete","Mark"]
+    query_prefixes: ["Get"]
+  forbid_tokens:
+    - company_id
+    - user_id
+    - sql
+    - sqlite
+    - supabase
+    - http
+    - https
+    - table
+    - ddl
+    - endpoint
+    - api
+  deduplicate: true
+  domains_allowed:
+    - auth
+    - system
+    - master
+    - user
+    - notification
+    - audit
+    - order
+    - shipping
+    - billing
