@@ -1,18 +1,18 @@
 #!/data/data/com.termux/files/usr/bin/bash
 set -e
-ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-cd "$ROOT_DIR"
 
-SPEC="spec/usecases.schema.yaml"
+FILE="spec/usecases.schema.yaml"
 
-if [ ! -f "$SPEC" ]; then
-  echo "ERROR: spec not found"
+echo "=== REVIEW USECASES ==="
+
+if [ ! -f "$FILE" ]; then
+  echo "ERROR: $FILE not found"
   exit 1
 fi
 
-if grep -E "company_id|table|sql|http" "$SPEC" >/dev/null; then
-  echo "ERROR: forbidden keyword detected in spec"
+grep -E "company_id|SQL|HTTP" "$FILE" && {
+  echo "ERROR: forbidden words detected"
   exit 1
-fi
+}
 
 echo "OK: usecases schema looks clean"

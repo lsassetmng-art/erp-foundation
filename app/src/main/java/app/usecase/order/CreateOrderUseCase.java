@@ -2,7 +2,7 @@ package app.usecase.order;
 
 /**
  * CreateOrderUseCase
- * Flow: validate, create
+ * Flow: 
  */
 public final class CreateOrderUseCase {
 

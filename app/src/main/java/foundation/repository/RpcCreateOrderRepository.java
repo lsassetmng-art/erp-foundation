@@ -11,7 +11,7 @@ public final class RpcCreateOrderRepository
 
     @Override
     public CreateOrderResult call(CreateOrderInput input) throws Exception {
-        JSONObject res = callRpc("rpc_order_create", input.toJson());
+        JSONObject res = callRpc("", input.toJson());
         return CreateOrderResult.fromJson(res);
     }
 }
