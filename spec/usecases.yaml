@@ -1,0 +1,16 @@
+usecases:
+  - domain: order
+    name: CreateOrder
+    flow:
+      - validate
+      - create
+    rpc:
+      create: rpc_order_create
+
+  - domain: order
+    name: ListOrders
+    flow:
+      - validate
+      - list
+    rpc:
+      list: rpc_order_list
