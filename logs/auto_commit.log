@@ -124,3 +124,24 @@ To https://github.com/lsassetmng-art/erp-foundation.git
  ! [remote rejected] main -> main (refusing to allow a Personal Access Token to create or update workflow `.github/workflows/ci.yml` without `workflow` scope)
 error: failed to push some refs to 'https://github.com/lsassetmng-art/erp-foundation.git'
 ---- 2026-01-19 08:30:01 START ----
+[main e228063] auto: update generated files (2026-01-19 08:30:01)
+ 21 files changed, 344 insertions(+), 43 deletions(-)
+ create mode 100644 app/src/main/java/app/domain/exception/ConflictException.java
+ create mode 100644 app/src/main/java/app/domain/exception/DomainException.java
+ create mode 100644 app/src/main/java/app/domain/exception/NotFoundException.java
+ create mode 100644 app/src/main/java/app/domain/exception/ValidationException.java
+ create mode 100644 app/src/main/java/app/usecase/auth/LogoutUserInput.java
+ create mode 100644 app/src/main/java/app/usecase/auth/LogoutUserRepository.java
+ create mode 100644 app/src/main/java/app/usecase/auth/LogoutUserResult.java
+ create mode 100644 app/src/main/java/app/usecase/auth/LogoutUserUseCase.java
+ create mode 100644 app/src/main/java/app/usecase/order/CreateOrderValidator.java
+ create mode 100644 app/src/main/java/foundation/repository/RpcLogoutUserRepository.java
+ create mode 100644 app/src/main/java/test/auth/LogoutUserRpcNegativeTest.java
+ create mode 100644 app/src/main/java/test/auth/LogoutUserRpcTest.java
+ create mode 100644 app/src/main/java/validation/auth/LogoutUserSchemaValidator.java
+ create mode 100644 app/src/test/java/app/usecase/order/CreateOrderUseCaseTest.java
+ create mode 100644 pm_ai/requirements.md
+To https://github.com/lsassetmng-art/erp-foundation.git
+ ! [remote rejected] main -> main (refusing to allow a Personal Access Token to create or update workflow `.github/workflows/ci.yml` without `workflow` scope)
+error: failed to push some refs to 'https://github.com/lsassetmng-art/erp-foundation.git'
+---- 2026-01-19 08:31:01 START ----
