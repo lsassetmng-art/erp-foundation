@@ -45,7 +45,7 @@ dispatch_one() {
     return 0
   fi
 
-  cp "$task" "$dest/$name"
+# DISABLED_BY_PM_LOOP_FIX:   cp "$task" "$dest/$name"
   echo "➡ dispatched to $target" | tee -a "$LOG"
 }
 
