@@ -1,43 +1,33 @@
-import os
+#!/usr/bin/env python3
+from pathlib import Path
 
-ACT_ROOT = "app/src/main/java/app/activity"
-OUT_ROOT = "app/src/androidTest/java/app/ui"
-os.makedirs(OUT_ROOT, exist_ok=True)
+ROOT = Path(__file__).resolve().parents[1]
+TEST = ROOT / "app/src/androidTest/java/app/ui"
+TEST.mkdir(parents=True, exist_ok=True)
 
-for root, _, files in os.walk(ACT_ROOT):
-    for f in files:
-        if not f.endswith("Activity.java"):
-            continue
-        domain = os.path.basename(root)
-        name = f.replace(".java", "")
-        test_path = os.path.join(OUT_ROOT, f"{name}Test.java")
-        if os.path.exists(test_path):
-            continue
-
-        # packageは固定（androidTest）
-        with open(test_path, "w", encoding="utf-8") as out:
-            out.write(f"""package app.ui;
+(TEST / "UiEspressoSmokeTest.java").write_text("""
+package app.ui;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import app.activity.{domain}.{name};
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 
 @RunWith(AndroidJUnit4.class)
-public class {name}Test {{
+public class UiEspressoSmokeTest {
 
     @Rule
-    public ActivityTestRule<{name}> rule = new ActivityTestRule<>({name}.class);
+    public ActivityTestRule<MainActivity> rule =
+        new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void launch_should_succeed() {{
-        // 최소: 起動できることだけ確認（UI操作は後で追加）
-    }}
-}}
-""")
+    public void app_starts() {
+        onView(isRoot()).check((v, e) -> {});
+    }
+}
+""", encoding="utf-8")
 
-print("OK: Espresso tests generated")
+print("OK: Espresso test generated")

@@ -1,46 +1,163 @@
 #!/data/data/com.termux/files/usr/bin/bash
-set -euo pipefail
+set -e
 
-###############################################################################
-# foundation_ui_generate.sh
-# - ViewModel.executeSafe() 生成
-# - Fragment + HostActivity + nav_graph 生成
-# - Sketchware 用 export
-# ※ cd 位置非依存（スクリプト基点）
-###############################################################################
+############################################
+# FOUNDATION UI GENERATE (Android 正道)
+# - Fragment 自動生成
+# - inputs.schema.yaml
+# - XML 自動生成
+# - ViewModel.executeSafe
+# cd非依存 / Termux対応
+############################################
 
-ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-cd "$ROOT_DIR"
+# --- ルート検出 ---
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT"
 
 echo "=== FOUNDATION UI GENERATE START ==="
 
-# ---------- 前提チェック ----------
-for d in tools spec app scripts; do
-  if [ ! -d "$d" ]; then
-    echo "ERROR: required directory missing: $d"
-    exit 1
-  fi
-done
+# --- ディレクトリ ---
+mkdir -p spec tools \
+  app/src/main/java/app/ui/fragment \
+  app/src/main/java/app/ui/viewmodel \
+  app/src/main/res/layout \
+  app/src/main/res/navigation
 
-# ---------- [1/4] ViewModels ----------
-echo "[1/4] Generate ViewModels (executeSafe + validation)"
+############################################
+# 1️⃣ inputs.schema.yaml（完全テンプレ）
+############################################
+cat << 'YAML' > spec/inputs.schema.yaml
+inputs:
+  CreateOrder:
+    fields:
+      orderNo:
+        type: string
+        required: true
+        maxLength: 20
+      amount:
+        type: number
+        required: true
+
+  Login:
+    fields:
+      email:
+        type: string
+        required: true
+      password:
+        type: string
+        required: true
+YAML
+echo "OK: spec/inputs.schema.yaml"
+
+############################################
+# 2️⃣ ViewModel.executeSafe 自動生成
+############################################
+cat << 'PY' > tools/generate_viewmodel_execute_safe.py
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+VM_DIR = ROOT / "app/src/main/java/app/ui/viewmodel"
+VM_DIR.mkdir(parents=True, exist_ok=True)
+
+code = """package app.ui.viewmodel;
+
+public abstract class BaseViewModel {
+
+    protected <T> void executeSafe(Callable<T> action) {
+        try {
+            action.call();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public interface Callable<T> {
+        T call() throws Exception;
+    }
+}
+"""
+(Base := VM_DIR / "BaseViewModel.java").write_text(code, encoding="utf-8")
+print("OK: ViewModel executeSafe generated")
+PY
+
 python3 tools/generate_viewmodel_execute_safe.py
 
-# ---------- [2/4] Fragments / HostActivity / Nav ----------
-echo "[2/4] Generate Fragments + HostActivity + nav_graph"
-python3 tools/generate_fragments_from_spec.py
-python3 tools/generate_nav_graph.py
+############################################
+# 3️⃣ Fragment + XML 自動生成
+############################################
+cat << 'PY' > tools/generate_fragments_and_xml.py
+from pathlib import Path
 
-# ---------- [3/4] Sketchware Export ----------
-echo "[3/4] Export for Sketchware"
-bash scripts/export_mobile_templates.sh
+ROOT = Path(__file__).resolve().parents[1]
 
-# ---------- [4/4] Done ----------
-echo "[4/4] Done"
-echo "Check:"
-echo " - Nav:        app/src/main/res/navigation/nav_graph.xml"
-echo " - Fragments:  app/src/main/java/app/ui/fragment/"
-echo " - ViewModels: app/src/main/java/app/ui/viewmodel/"
-echo " - Export:     exports/sketchware/export_*/"
+fragments = [
+    ("CreateOrder", ["orderNo", "amount"]),
+    ("Login", ["email", "password"])
+]
+
+for name, fields in fragments:
+    # Fragment
+    fdir = ROOT / "app/src/main/java/app/ui/fragment"
+    fdir.mkdir(parents=True, exist_ok=True)
+    f = fdir / f"{name}Fragment.java"
+    f.write_text(f"""package app.ui.fragment;
+
+import androidx.fragment.app.Fragment;
+
+public class {name}Fragment extends Fragment {{
+}}
+""", encoding="utf-8")
+
+    # XML
+    ldir = ROOT / "app/src/main/res/layout"
+    ldir.mkdir(parents=True, exist_ok=True)
+    xml = ldir / f"fragment_{name.lower()}.xml"
+
+    fields_xml = "\\n".join([
+        f'<EditText android:id="@+id/input_{fld}" android:hint="{fld}" />'
+        for fld in fields
+    ])
+
+    xml.write_text(f"""<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+{fields_xml}
+</LinearLayout>
+""", encoding="utf-8")
+
+print("OK: Fragments + XML generated")
+PY
+
+python3 tools/generate_fragments_and_xml.py
+
+############################################
+# 4️⃣ nav_graph.xml 自動生成
+############################################
+cat << 'XML' > app/src/main/res/navigation/nav_graph.xml
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="app.ui.fragment.LoginFragment" />
+
+    <fragment
+        android:id="@+id/createOrderFragment"
+        android:name="app.ui.fragment.CreateOrderFragment" />
+
+</navigation>
+XML
+
+echo "OK: nav_graph.xml"
 
 echo "=== FOUNDATION UI GENERATE DONE ==="
+echo "Check:"
+echo " - spec/inputs.schema.yaml"
+echo " - app/ui/fragment/"
+echo " - app/ui/viewmodel/"
+echo " - res/layout/"
+echo " - res/navigation/nav_graph.xml"

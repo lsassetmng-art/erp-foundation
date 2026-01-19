@@ -1,6 +1,6 @@
 # UI Review (Static)
 
-- generated_at: 2026-01-19T10:00:00
+- generated_at: 2026-01-19T10:30:00
 
 ## Summary
 - Activity: app/src/main/java/app/activity/order/OrderActivity.java
@@ -14,6 +14,7 @@
 - Activity: app/src/main/java/app/activity/shipping/CreateShippingActivity.java
 - Activity: app/src/main/java/app/activity/billing/CreateInvoiceActivity.java
 - Activity: app/src/main/java/app/activity/billing/GetInvoiceListActivity.java
+- Activity: app/src/main/java/app/activity/core/HomeActivity.java
 - XML: app/src/main/res/layout/activity_order.xml
 - XML: app/src/main/res/layout/activity_createorder.xml
 - XML: app/src/main/res/layout/activity_listorders.xml
@@ -26,6 +27,7 @@
 - XML: app/src/main/res/layout/activity_createinvoice.xml
 - XML: app/src/main/res/layout/activity_getinvoicelist.xml
 - XML: app/src/main/res/layout/activity_host.xml
+- XML: app/src/main/res/layout/activity_home.xml
 - Compose: app/src/main/java/app/ui/compose/order/OrderScreen.kt
 - Compose: app/src/main/java/app/ui/compose/order/CreateOrderScreen.kt
 - Compose: app/src/main/java/app/ui/compose/order/ListOrdersScreen.kt
@@ -37,6 +39,7 @@
 - Compose: app/src/main/java/app/ui/compose/shipping/CreateShippingScreen.kt
 - Compose: app/src/main/java/app/ui/compose/billing/CreateInvoiceScreen.kt
 - Compose: app/src/main/java/app/ui/compose/billing/GetInvoiceListScreen.kt
+- Compose: app/src/main/java/app/ui/compose/core/HomeScreen.kt
 
 ## Issues
 - app/src/main/res/layout/activity_host.xml: TextView無し（最低表示要素不足の可能性）

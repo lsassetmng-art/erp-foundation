@@ -1,31 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
-
-  <fragment
-      android:id="@+id/homeFragment"
-      android:name="app.ui.fragment.HomeFragment"
-      android:label="Home"/>
+    app:startDestination="@id/loginFragment">
 
   <fragment
       android:id="@+id/loginFragment"
       android:name="app.ui.fragment.LoginFragment"
-      android:label="Login"/>
+      android:label="LoginFragment" />
 
   <fragment
       android:id="@+id/createOrderFragment"
       android:name="app.ui.fragment.CreateOrderFragment"
-      android:label="CreateOrder"/>
-
-  <fragment
-      android:id="@+id/createShippingFragment"
-      android:name="app.ui.fragment.CreateShippingFragment"
-      android:label="CreateShipping"/>
-
-  <fragment
-      android:id="@+id/createInvoiceFragment"
-      android:name="app.ui.fragment.CreateInvoiceFragment"
-      android:label="CreateInvoice"/>
+      android:label="CreateOrderFragment" />
 
 </navigation>
