@@ -27,3 +27,9 @@ run_*.sh
 # ---- pm one-shot fix scripts ----
 fix_*.sh
 run_*.sh
+
+# ---- pm runtime / one-shot scripts ----
+run_*.sh
+fix_*.sh
+finalize_*.sh
+pm_*_ignore.sh
