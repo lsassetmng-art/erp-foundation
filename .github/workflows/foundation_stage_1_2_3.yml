@@ -1,0 +1,11 @@
+name: foundation-stage-1-2-3
+
+on: [push, workflow_dispatch]
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run ERP foundation gate
+        run: bash scripts/foundation_stage_1_2_3.sh

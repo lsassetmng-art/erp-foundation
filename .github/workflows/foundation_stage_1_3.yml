@@ -1,0 +1,14 @@
+name: foundation-stage-1-3
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  stage_1_3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Stage 1-3 (schema/validation/ui wiring)
+        run: |
+          bash scripts/foundation_stage_1_3.sh
