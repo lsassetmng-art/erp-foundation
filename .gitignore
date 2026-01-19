@@ -19,3 +19,7 @@ pm_ai/rules/.cache
 # pm runtime outputs
 reports/
 exports/
+
+# ---- pm runtime outputs ----
+logs/
+run_*.sh
