@@ -1,1 +1,6 @@
 logs/auto_commit.log
+
+# PM / AI runtime files
+logs/
+pm_ai/inbox/
+pm_ai/done/
