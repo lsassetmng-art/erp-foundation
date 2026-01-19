@@ -23,3 +23,7 @@ exports/
 # ---- pm runtime outputs ----
 logs/
 run_*.sh
+
+# ---- pm one-shot fix scripts ----
+fix_*.sh
+run_*.sh
