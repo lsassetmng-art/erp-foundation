@@ -33,3 +33,7 @@ run_*.sh
 fix_*.sh
 finalize_*.sh
 pm_*_ignore.sh
+logs/
+tmp/
+exports/
+pm_ai/done/

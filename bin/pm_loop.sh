@@ -1,71 +1,47 @@
 #!/bin/sh
 set -eu
 
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-PM_AI="$ROOT/pm_ai"
-INBOX="$PM_AI/inbox"
-DONE="$PM_AI/done"
-RULES="$PM_AI/rules"
+REPO="$HOME/erp-foundation"
+INBOX="$REPO/pm_ai/inbox"
+DONE="$REPO/pm_ai/done"
+RULES="$REPO/pm_ai/rules"
 
 echo "▶ pm_loop start"
-echo "▶ repo: $ROOT"
+echo "▶ repo: $REPO"
 
-# git clean gate
-if ! git -C "$ROOT" diff --quiet; then
+cd "$REPO"
+
+# rules 前提チェック
+[ -d "$RULES" ] || { echo "❌ rules missing"; exit 2; }
+
+# git clean check
+if ! git diff --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
   echo "❌ working tree not clean; stop"
-  git -C "$ROOT" status --short
-  exit 1
-fi
-
-# rules must exist
-if [ ! -d "$RULES" ] || [ -z "$(ls -A "$RULES" 2>/dev/null)" ]; then
-  echo "❌ PM rules not found or empty: $RULES"
+  git status --short
   exit 3
 fi
 
-processed=0
-for task in "$INBOX"/*.md; do
-  [ -f "$task" ] || continue
-  name="$(basename "$task")"
-  echo "▶ task: $name"
+count=0
+for TASK in "$INBOX"/*.md; do
+  [ -f "$TASK" ] || continue
 
-  # 対象業務抽出（erp-xxx）
-  targets="$(grep -Eo 'erp-[a-z]+' "$task" | sort -u | tr '\n' ' ')"
-  if [ -z "$targets" ]; then
-    echo "⚠ no target business found; skip"
-    mv "$task" "$DONE/$name"
-    continue
+  TARGET=$(grep '^対象業務:' "$TASK" | awk '{print $2}')
+  [ -n "$TARGET" ] || { echo "⚠ no target"; continue; }
+
+  APPLY="$HOME/$TARGET/apply_task.sh"
+  if [ ! -x "$APPLY" ]; then
+    echo "❌ apply_task.sh not found: $APPLY"
+    exit 4
   fi
 
-  rc_all=0
-  for t in $targets; do
-    repo="$HOME/$t"
-    apply="$repo/apply_task.sh"
-    echo "➡ call: $t"
+  echo "▶ task: $(basename "$TASK")"
+  echo "▶ call: $TARGET"
+  "$APPLY" "$TASK"
 
-    if [ ! -x "$apply" ]; then
-      echo "❌ apply_task.sh not found: $apply"
-      rc_all=2
-      continue
-    fi
-
-    if ! "$apply" "$task"; then
-      echo "❌ apply failed: $t"
-      rc_all=2
-    fi
-  done
-
-  # 処理済みに移動（再実行防止）
-  mv "$task" "$DONE/$name"
-  processed=$((processed+1))
-
-  # どれか失敗したら exit 非0（CI連動）
-  if [ "$rc_all" -ne 0 ]; then
-    echo "❌ task failed: $name"
-    exit 2
-  fi
+  mv "$TASK" "$DONE/"
+  count=$((count+1))
 done
 
-echo "✔ processed $processed task(s)"
+echo "✔ processed $count task(s)"
 echo "▶ pm_loop end"
 exit 0
