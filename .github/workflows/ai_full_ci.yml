@@ -1,0 +1,26 @@
+name: AI Full CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  ai-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: PM AI
+        run: python3 tools/pm_usecase_ai.py
+
+      - name: Architect AI
+        run: python3 ai_roles/architect_ai.py
+
+      - name: Reviewer AI
+        run: bash ai_roles/reviewer_ai.sh
+
+      - name: Coder AI
+        run: bash ai_roles/coder_ai.sh

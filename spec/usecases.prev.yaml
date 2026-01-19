@@ -1,0 +1,25 @@
+usecases:
+- domain: auth
+  name: AuthenticateUser
+  type: command
+- domain: auth
+  name: LogoutUser
+  type: command
+- domain: order
+  name: CreateOrder
+  type: command
+- domain: order
+  name: ConfirmOrder
+  type: command
+- domain: order
+  name: GetOrderList
+  type: query
+- domain: shipping
+  name: CreateShipping
+  type: command
+- domain: billing
+  name: CreateInvoice
+  type: command
+- domain: billing
+  name: GetInvoiceList
+  type: query

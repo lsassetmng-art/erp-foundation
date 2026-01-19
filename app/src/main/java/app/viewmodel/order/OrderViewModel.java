@@ -12,6 +12,9 @@ import app.usecase.order.CreateOrderUseCase;
  * - company_id は一切扱わない
  */
 public final class OrderViewModel extends BaseViewModel {
+    // BINDING READY
+    // TODO: expose execute() via LiveData / StateFlow
+
 
     private final CreateOrderUseCase createOrderUseCase;
 

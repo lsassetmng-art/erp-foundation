@@ -22,6 +22,26 @@ fi
 
 # ---------- 生成フェーズ ----------
 echo "[1/5] Generate UseCases / DTO / Repository"
+echo "[B] Generate Repository Impl (Supabase RPC)"
+echo "[C] Generate ViewModels"
+python3 tools/generate_viewmodels.py
+echo "[C] Generate Activities"
+echo "[D] Generate XML layouts"
+python3 tools/generate_xml_layouts.py
+
+echo "[E] Enhance ViewModels"
+python3 tools/enhance_viewmodels.py
+
+echo "[G] Generate navigation graph"
+python3 tools/generate_nav_graph.py
+
+python3 tools/generate_activities.py
+
+python3 tools/generate_repositories_impl.py
+
+echo "[A] Generate ViewModels"
+python3 tools/generate_viewmodels.py
+
 python3 tools/generate_usecases.py
 
 if [ -x "tools/generate_rpc_tests.py" ]; then
