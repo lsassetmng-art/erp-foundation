@@ -1,44 +1,42 @@
-#!/data/data/com.termux/files/usr/bin/sh
+#!/bin/sh
 set -eu
 
-echo "▶ pm_loop start"
-
-# repo root (cd非依存)
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
-echo "▶ repo: $REPO"
-cd "$REPO"
-
-# clean check
-if ! git diff --quiet || ! git diff --cached --quiet; then
-  echo "❌ working tree not clean; stop"
-  echo
-  echo "🔍 git status:"
-  git status --short
-  exit 10
-fi
-
-echo "✅ working tree clean"
-
 INBOX="$REPO/pm_ai/inbox"
 DONE="$REPO/pm_ai/done"
-COUNT=0
+LOG="$REPO/logs/pm_loop.log"
 
-mkdir -p "$INBOX" "$DONE"
+echo "▶ pm_loop start"
+echo "▶ repo: $REPO"
 
-for f in "$INBOX"/*.md; do
-  [ -e "$f" ] || continue
-  echo "▶ task: $(basename "$f")"
+cd "$REPO"
 
-  # 今回は処理なし（将来実装）
-  mv "$f" "$DONE/"
-  COUNT=$((COUNT + 1))
-done
-
-if [ "$COUNT" -eq 0 ]; then
-  echo "ℹ no tasks"
-else
-  echo "✅ processed $COUNT task(s)"
+# --- clean check（今まで通り） ---
+if [ -n "$(git status --porcelain)" ]; then
+  echo "❌ working tree not clean; stop"
+  git status --short
+  exit 2
 fi
 
+mkdir -p "$DONE" "$(dirname "$LOG")"
+
+count=0
+for task in "$INBOX"/*.md; do
+  [ -e "$task" ] || break
+  name="$(basename "$task")"
+  echo "▶ task: $name"
+
+  # --- マスタ指示チェック（警告のみ） ---
+  if ! grep -Eq 'マスタ|共通マスタ|準マスタ|マスタ判定' "$task"; then
+    echo "⚠ WARNING: master judgment not found in $name" | tee -a "$LOG"
+    echo "  👉 マスタ管理 実装指示書の形式を推奨" | tee -a "$LOG"
+  fi
+
+  # （ここでは実装しない：運用どおり）
+  mv "$task" "$DONE/$name"
+  count=$((count + 1))
+done
+
+echo "✔ processed $count task(s)"
 echo "▶ pm_loop end"
 exit 0
