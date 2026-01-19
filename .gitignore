@@ -6,3 +6,12 @@ pm_ai/inbox/
 pm_ai/done/
 # pm runtime logs
 logs/*.log
+
+# pm runtime
+logs/*.log
+
+# pm loop backups
+bin/pm_loop.sh.bak_*
+
+# pm rules runtime cache (not rules themselves)
+pm_ai/rules/.cache
