@@ -4,3 +4,5 @@ logs/auto_commit.log
 logs/
 pm_ai/inbox/
 pm_ai/done/
+# pm runtime logs
+logs/*.log
