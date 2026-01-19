@@ -1,0 +1,31 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+  <fragment
+      android:id="@+id/homeFragment"
+      android:name="app.ui.fragment.HomeFragment"
+      android:label="Home"/>
+
+  <fragment
+      android:id="@+id/loginFragment"
+      android:name="app.ui.fragment.LoginFragment"
+      android:label="Login"/>
+
+  <fragment
+      android:id="@+id/createOrderFragment"
+      android:name="app.ui.fragment.CreateOrderFragment"
+      android:label="CreateOrder"/>
+
+  <fragment
+      android:id="@+id/createShippingFragment"
+      android:name="app.ui.fragment.CreateShippingFragment"
+      android:label="CreateShipping"/>
+
+  <fragment
+      android:id="@+id/createInvoiceFragment"
+      android:name="app.ui.fragment.CreateInvoiceFragment"
+      android:label="CreateInvoice"/>
+
+</navigation>

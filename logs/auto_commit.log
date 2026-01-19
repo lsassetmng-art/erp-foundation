@@ -153,3 +153,69 @@ To https://github.com/lsassetmng-art/erp-foundation.git
  ! [remote rejected] main -> main (refusing to allow a Personal Access Token to create or update workflow `.github/workflows/ci.yml` without `workflow` scope)
 error: failed to push some refs to 'https://github.com/lsassetmng-art/erp-foundation.git'
 ---- 2026-01-19 09:30:02 START ----
+[main 224702c] auto: update generated files (2026-01-19 09:30:02)
+ 63 files changed, 1167 insertions(+)
+ create mode 100644 .github/workflows/ai_full_ci.yml
+ create mode 100755 ai_roles/architect_ai.py
+ create mode 100755 ai_roles/coder_ai.sh
+ create mode 100755 ai_roles/reviewer_ai.sh
+ create mode 100644 app/src/main/java/app/activity/auth/AuthenticateUserActivity.java
+ create mode 100644 app/src/main/java/app/activity/auth/LogoutActivity.java
+ create mode 100644 app/src/main/java/app/activity/auth/LogoutUserActivity.java
+ create mode 100644 app/src/main/java/app/activity/billing/CreateInvoiceActivity.java
+ create mode 100644 app/src/main/java/app/activity/billing/GetInvoiceListActivity.java
+ create mode 100644 app/src/main/java/app/activity/order/ConfirmOrderActivity.java
+ create mode 100644 app/src/main/java/app/activity/order/CreateOrderActivity.java
+ create mode 100644 app/src/main/java/app/activity/order/GetOrderListActivity.java
+ create mode 100644 app/src/main/java/app/activity/order/ListOrdersActivity.java
+ create mode 100644 app/src/main/java/app/activity/order/OrderActivity.java
+ create mode 100644 app/src/main/java/app/activity/shipping/CreateShippingActivity.java
+ create mode 100644 app/src/main/java/app/repository/RepositoryProvider.java
+ create mode 100644 app/src/main/java/app/repository/impl/auth/AuthenticateUserRepositoryImpl.java
+ create mode 100644 app/src/main/java/app/repository/impl/auth/LogoutRepositoryImpl.java
+ create mode 100644 app/src/main/java/app/repository/impl/auth/LogoutUserRepositoryImpl.java
+ create mode 100644 app/src/main/java/app/repository/impl/billing/CreateInvoiceRepositoryImpl.java
+ create mode 100644 app/src/main/java/app/repository/impl/billing/GetInvoiceListRepositoryImpl.java
+ create mode 100644 app/src/main/java/app/repository/impl/order/ConfirmOrderRepositoryImpl.java
+ create mode 100644 app/src/main/java/app/repository/impl/order/CreateOrderRepositoryImpl.java
+ create mode 100644 app/src/main/java/app/repository/impl/order/GetOrderListRepositoryImpl.java
+ create mode 100644 app/src/main/java/app/repository/impl/order/ListOrdersRepositoryImpl.java
+ create mode 100644 app/src/main/java/app/repository/impl/shipping/CreateShippingRepositoryImpl.java
+ create mode 100644 app/src/main/java/app/viewmodel/auth/AuthenticateUserViewModel.java
+ create mode 100644 app/src/main/java/app/viewmodel/auth/LogoutUserViewModel.java
+ create mode 100644 app/src/main/java/app/viewmodel/auth/LogoutViewModel.java
+ create mode 100644 app/src/main/java/app/viewmodel/billing/CreateInvoiceViewModel.java
+ create mode 100644 app/src/main/java/app/viewmodel/billing/GetInvoiceListViewModel.java
+ create mode 100644 app/src/main/java/app/viewmodel/order/ConfirmOrderViewModel.java
+ create mode 100644 app/src/main/java/app/viewmodel/order/CreateOrderViewModel.java
+ create mode 100644 app/src/main/java/app/viewmodel/order/GetOrderListViewModel.java
+ create mode 100644 app/src/main/java/app/viewmodel/order/ListOrdersViewModel.java
+ create mode 100644 app/src/main/java/app/viewmodel/shipping/CreateShippingViewModel.java
+ create mode 100644 app/src/main/java/foundation/supabase/SupabaseRpcClient.java
+ create mode 100644 app/src/main/res/layout/activity_authenticateuser.xml
+ create mode 100644 app/src/main/res/layout/activity_confirmorder.xml
+ create mode 100644 app/src/main/res/layout/activity_createinvoice.xml
+ create mode 100644 app/src/main/res/layout/activity_createorder.xml
+ create mode 100644 app/src/main/res/layout/activity_createshipping.xml
+ create mode 100644 app/src/main/res/layout/activity_getinvoicelist.xml
+ create mode 100644 app/src/main/res/layout/activity_getorderlist.xml
+ create mode 100644 app/src/main/res/layout/activity_listorders.xml
+ create mode 100644 app/src/main/res/layout/activity_logout.xml
+ create mode 100644 app/src/main/res/layout/activity_logoutuser.xml
+ create mode 100644 app/src/main/res/layout/activity_order.xml
+ create mode 100644 docs/navigation.md
+ create mode 100644 reports/architect_review.md
+ create mode 100644 reports/spec_diff.md
+ create mode 100755 scripts/ai_full_loop.sh
+ create mode 100644 spec/usecases.prev.yaml
+ create mode 100644 tools/enhance_viewmodels.py
+ create mode 100644 tools/generate_activities.py
+ create mode 100644 tools/generate_nav_graph.py
+ create mode 100644 tools/generate_repositories_impl.py
+ create mode 100644 tools/generate_viewmodels.py
+ create mode 100644 tools/generate_xml_layouts.py
+ create mode 100755 tools/spec_diff_ai.py
+To https://github.com/lsassetmng-art/erp-foundation.git
+ ! [remote rejected] main -> main (refusing to allow a Personal Access Token to create or update workflow `.github/workflows/ai_full_ci.yml` without `workflow` scope)
+error: failed to push some refs to 'https://github.com/lsassetmng-art/erp-foundation.git'
+---- 2026-01-19 10:00:02 START ----

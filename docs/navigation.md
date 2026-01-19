@@ -11,3 +11,4 @@
 - CreateShippingActivity
 - CreateInvoiceActivity
 - GetInvoiceListActivity
+- HomeActivity

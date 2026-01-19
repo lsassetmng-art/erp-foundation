@@ -26,7 +26,47 @@ echo "[B] Generate Repository Impl (Supabase RPC)"
 echo "[C] Generate ViewModels"
 python3 tools/generate_viewmodels.py
 echo "[C] Generate Activities"
+echo "[1C] Generate Compose Screens"
+python3 tools/generate_compose_screens.py
+
+echo "[2C] Generate Navigation Helpers"
+python3 tools/generate_navigation_helpers.py
+
+echo "[3C] Generate Espresso UI tests"
+python3 tools/generate_espresso_tests.py
+
+echo "[4C] UI Reviewer (static)"
+python3 tools/ui_reviewer_ai.py
+
+echo "[5C] Export for mobile IDE"
+./scripts/export_for_mobile_ide.sh
+
+
 echo "[D] Generate XML layouts"
+echo "[XML] Wire Activities to XML"
+python3 tools/wire_activity_xml.py
+
+echo "[XML] Wire Activities to ViewModel"
+echo "[XML] Add input forms"
+echo "[E] Generate input XML from spec"
+python3 tools/generate_input_xml_from_spec.py
+
+echo "[E] Wire Activities from input spec"
+python3 tools/wire_activity_from_input_spec.py
+
+echo "[F] Generate Home menu (navigation)"
+python3 tools/generate_home_menu.py
+
+echo "[G] Export mobile templates"
+./scripts/export_mobile_templates.sh
+
+python3 tools/augment_xml_inputs.py
+
+echo "[XML] Wire Activity to DTO"
+python3 tools/wire_activity_dto.py
+
+python3 tools/wire_activity_viewmodel.py
+
 python3 tools/generate_xml_layouts.py
 
 echo "[E] Enhance ViewModels"

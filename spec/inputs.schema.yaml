@@ -1,0 +1,87 @@
+version: 1
+defaults:
+  locale: ja
+  numeric_trim: true
+
+screens:
+  - domain: auth
+    name: Login
+    fragment: LoginFragment
+    activity: LoginActivity
+    layout: fragment_login
+    inputs:
+      - id: email
+        label: メール
+        type: string
+        required: true
+        min_len: 5
+        max_len: 254
+        pattern: '^[^@\s]+@[^@\s]+\.[^@\s]+$'
+      - id: password
+        label: パスワード
+        type: string
+        required: true
+        min_len: 8
+        max_len: 64
+
+  - domain: order
+    name: CreateOrder
+    fragment: CreateOrderFragment
+    activity: CreateOrderActivity
+    layout: fragment_create_order
+    inputs:
+      - id: order_no
+        label: 受注番号
+        type: string
+        required: true
+        min_len: 1
+        max_len: 30
+      - id: qty
+        label: 数量
+        type: int
+        required: true
+        min: 1
+        max: 999999
+      - id: note
+        label: 備考
+        type: string
+        required: false
+        max_len: 200
+
+  - domain: shipping
+    name: CreateShipping
+    fragment: CreateShippingFragment
+    activity: CreateShippingActivity
+    layout: fragment_create_shipping
+    inputs:
+      - id: shipping_no
+        label: 出荷番号
+        type: string
+        required: true
+        min_len: 1
+        max_len: 30
+      - id: order_no
+        label: 受注番号
+        type: string
+        required: true
+        min_len: 1
+        max_len: 30
+
+  - domain: billing
+    name: CreateInvoice
+    fragment: CreateInvoiceFragment
+    activity: CreateInvoiceActivity
+    layout: fragment_create_invoice
+    inputs:
+      - id: billing_no
+        label: 請求番号
+        type: string
+        required: true
+        min_len: 1
+        max_len: 30
+      - id: order_no
+        label: 受注番号
+        type: string
+        required: true
+        min_len: 1
+        max_len: 30
