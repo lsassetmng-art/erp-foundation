@@ -15,3 +15,7 @@ bin/pm_loop.sh.bak_*
 
 # pm rules runtime cache (not rules themselves)
 pm_ai/rules/.cache
+
+# pm runtime outputs
+reports/
+exports/
