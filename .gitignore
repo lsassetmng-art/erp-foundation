@@ -69,3 +69,12 @@ erp-*/**
 *.tmp
 .DS_Store
 
+
+# ==================================================
+# Optional / experimental bin scripts (do not commit)
+# ==================================================
+bin/pm_lint_ext.sh
+bin/pm_lint_switch.sh
+bin/pm_loop_with_audit.sh
+bin/quarantine_watch.sh
+
