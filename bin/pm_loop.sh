@@ -1,4 +1,5 @@
 #!/bin/sh
+"/data/data/com.termux/files/home/erp-foundation/bin/pm_kill_guard.sh" || exit $?
 set -eu
 
 # ============================================================

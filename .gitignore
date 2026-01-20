@@ -38,3 +38,34 @@ tmp/
 exports/
 pm_ai/done/
 analysis/
+
+# ==================================================
+# Runtime / AI generated (do NOT commit)
+# ==================================================
+
+# Android monitoring artifacts
+android-ng-monitor/
+
+# Generated scripts
+gen_*.sh
+patch_*.sh
+
+# PM runtime
+logs/
+public/
+control/
+pm_ai/inbox/
+pm_ai/done/
+pm_ai/quarantine/
+pm_ai/*.auto.yaml
+pm_ai/policy_next.yaml
+
+# ERP module runtime (keep dirs, ignore contents)
+erp-*/**
+!erp-*/.gitkeep
+
+# OS / editor
+*.swp
+*.tmp
+.DS_Store
+
