@@ -1,25 +1,24 @@
 #!/bin/sh
 set -eu
 
-REPO="$HOME/erp-foundation"
-RULES="$REPO/pm_ai/rules"
-TASK="${1:-}"
+ROOT="$HOME/erp-foundation"
+INBOX="$ROOT/pm_ai/inbox"
+DONE="$ROOT/pm_ai/done"
+LOG_DIR="$ROOT/logs"
 
-echo "▶ apply_task start"
-echo "▶ repo: $REPO"
+TASK="$1"
+NOW="$(date '+%Y-%m-%d %H:%M:%S')"
 
-if [ ! -d "$RULES" ]; then
-  echo "⚠ pm_ai/rules not found (rule-based control disabled)"
-else
-  echo "✔ rules detected"
-fi
+mkdir -p "$DONE" "$LOG_DIR"
 
-if [ -z "$TASK" ] || [ ! -f "$TASK" ]; then
-  echo "❌ task file not found"
-  exit 2
-fi
+# ---- AI処理プレースホルダ ----
+# ここに mother AI / GPT / rule engine を後で接続
+# 今は「処理成功したこと」にする
+# --------------------------------
 
-echo "▶ task: $TASK"
-echo "▶ applying task (business logic placeholder)"
-echo "▶ apply_task end"
+BASENAME="$(basename "$TASK")"
+mv "$TASK" "$DONE/$BASENAME"
+
+echo "[$NOW] applied: $BASENAME" >> "$LOG_DIR/apply_task.log"
+
 exit 0

@@ -1,0 +1,15 @@
+version: 1
+
+rules:
+  - id: no_empty_task
+    type: file
+    check: not_empty
+    message: "task must not be empty"
+
+  - id: no_todo
+    type: content
+    forbid:
+      - "TODO"
+      - "仮"
+      - "guess"
+    message: "forbidden placeholder word detected"
