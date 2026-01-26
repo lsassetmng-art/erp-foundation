@@ -1,0 +1,9 @@
+policy_key: db.connection
+ddl_mode: false
+rules:
+  - id: require_ssl
+    severity: critical
+    message: "SSL must be ON"
+  - id: prefer_pooler_for_termux
+    severity: warn
+    message: "Prefer pooler(6543); allow Direct only for DDL"

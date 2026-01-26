@@ -1,88 +1,37 @@
-#!/bin/sh
-"/data/data/com.termux/files/home/erp-foundation/bin/pm_kill_guard.sh" || exit $?
+#!/data/data/com.termux/files/usr/bin/sh
 set -eu
+. "$(dirname "$0")/lib.sh"
+: "${DATABASE_URL:?}"
+: "${COMPANY_ID:?}"
 
-# ============================================================
-# pm_loop.sh
-# Project Manager main loop (Termux edition)
-# ============================================================
+INTERVAL="${INTERVAL_SEC:-60}"
+log OK "pm_loop start interval=${INTERVAL}s"
 
-ROOT="$HOME/erp-foundation"
-BIN="$ROOT/bin"
-LOG_DIR="$ROOT/logs"
-INBOX="$ROOT/pm_ai/inbox"
+while :; do
+  RID="$(run_id)"
 
-mkdir -p "$LOG_DIR"
+  KS="$(psql "$DATABASE_URL" -t -A -v ON_ERROR_STOP=1 -c \
+    "select is_on from ops.get_kill_switch('${COMPANY_ID}'::uuid);" 2>/dev/null || true)"
+  KS="$(printf "%s" "$KS" | tr -d '[:space:]' || true)"
 
-NOW="$(date '+%Y-%m-%d %H:%M:%S')"
-
-echo "▶ pm_loop start"
-echo "▶ repo: $ROOT"
-
-# ------------------------------------------------------------
-# 0. Git working tree guard
-# ------------------------------------------------------------
-if command -v git >/dev/null 2>&1; then
-  if [ "${PM_ALLOW_DIRTY:-0}" != "1" ]; then
-    if [ -n "$(git -C "$ROOT" status --porcelain 2>/dev/null)" ]; then
-      echo "❌ working tree not clean; stop"
-      git -C "$ROOT" status --short || true
-      echo "[$NOW] ❌ pm_loop FAILED (dirty tree)" > "$LOG_DIR/pm_loop.status"
-      echo "PM LOOP FAILED at $NOW (dirty tree)" > "$LOG_DIR/pm_loop.notify"
-      exit 4
-    fi
+  if [ "$KS" = "t" ]; then
+    psql "$DATABASE_URL" -c \
+      "insert into ops.sla_metric(company_id,metric_key,metric_value,detail)
+       values('${COMPANY_ID}'::uuid,'pm_loop_stopped',1,jsonb_build_object('run_id','${RID}'));" >/dev/null || true
+    log NG "kill_switch ON -> stop"
+    exit 99
   fi
-fi
 
-# ------------------------------------------------------------
-# 1. lint phase
-# ------------------------------------------------------------
-if [ ! -x "$BIN/pm_lint.sh" ]; then
-  echo "❌ pm_lint.sh not found"
-  echo "[$NOW] ❌ pm_loop FAILED (lint missing)" > "$LOG_DIR/pm_loop.status"
-  echo "PM LOOP FAILED at $NOW (lint missing)" > "$LOG_DIR/pm_loop.notify"
-  exit 4
-fi
+  "$(dirname "$0")/db_healthcheck.sh" || true
 
-"$BIN/pm_lint.sh"
+  psql "$DATABASE_URL" -c \
+    "insert into ops.sla_metric(company_id,metric_key,metric_value,detail)
+     values('${COMPANY_ID}'::uuid,'pm_loop_alive',1,jsonb_build_object('run_id','${RID}'));" >/dev/null || true
 
-# ------------------------------------------------------------
-# 2. apply_task phase
-# ------------------------------------------------------------
-TASK_COUNT=0
+  "$(dirname "$0")/ai_eval.sh" || true
 
-if [ -d "$INBOX" ]; then
-  for TASK in "$INBOX"/*; do
-    [ -f "$TASK" ] || continue
-    TASK_COUNT=$((TASK_COUNT + 1))
+  "$(dirname "$0")/notify_worker.sh" || true
+  "$(dirname "$0")/notify_worker.sh" || true
 
-    echo "▶ task: $TASK"
-
-    if [ -x "$BIN/apply_task.sh" ]; then
-      "$BIN/apply_task.sh" "$TASK"
-    else
-      echo "▶ applying task (business logic placeholder)"
-    fi
-  done
-fi
-
-echo "✔ processed $TASK_COUNT task(s)"
-echo "▶ pm_loop end"
-
-# ------------------------------------------------------------
-# 3. status / notify (EXIT CODE AWARE)
-# ------------------------------------------------------------
-EXIT_CODE=0
-NOW="$(date '+%Y-%m-%d %H:%M:%S')"
-
-if [ "$EXIT_CODE" -eq 0 ]; then
-  echo "[$NOW] ✅ pm_loop SUCCESS" > "$LOG_DIR/pm_loop.status"
-  echo "PM LOOP SUCCESS at $NOW" > "$LOG_DIR/pm_loop.notify"
-else
-  echo "[$NOW] ❌ pm_loop FAILED (exit=$EXIT_CODE)" > "$LOG_DIR/pm_loop.status"
-  echo "PM LOOP FAILED at $NOW (exit=$EXIT_CODE)" > "$LOG_DIR/pm_loop.notify"
-fi
-
-echo "$NOW" > "$LOG_DIR/pm_loop.last"
-
-exit "$EXIT_CODE"
+  sleep "$INTERVAL"
+done

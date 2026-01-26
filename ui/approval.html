@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Approval</title></head>
+<body>
+<h2>Approval</h2>
+
+<button onclick="decide('approved')">Approve</button>
+<button onclick="decide('rejected')">Reject</button>
+
+<script>
+const params = new URLSearchParams(location.search);
+const requestId = params.get("request_id");
+
+async function decide(status){
+  await fetch("/rest/v1/rpc/decide_request",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+      p_request_id: requestId,
+      p_decision: status,
+      p_note: null
+    })
+  });
+  location.href = "erp://approval/result?status="+status+"&request_id="+requestId;
+}
+</script>
+</body>
+</html>

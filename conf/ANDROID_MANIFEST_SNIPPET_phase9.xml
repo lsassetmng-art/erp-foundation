@@ -1,0 +1,4 @@
+<!-- Add inside <application> -->
+<activity android:name="com.lsam.MoneySelfManager.activities.admin.ApprovalListActivity" />
+<activity android:name="com.lsam.MoneySelfManager.activities.admin.KillSwitchActivity" />
+<activity android:name="com.lsam.MoneySelfManager.activities.admin.AlertListActivity" />

@@ -1,0 +1,6 @@
+# Layer2 approval policies (canonical)
+
+p_none:
+  approval_required: false
+  approver_role: none
+  max_retry: 0

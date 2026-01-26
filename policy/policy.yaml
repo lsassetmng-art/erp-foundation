@@ -1,0 +1,13 @@
+version: 1
+checks:
+  - id: duplicate_table_names
+    severity: high
+    sql: "select count(*) from (select lower(table_schema||'.'||table_name) k, count(*) c from information_schema.tables where table_type='BASE TABLE' and table_schema not in ('pg_catalog','information_schema') group by 1 having count(*)>1) x"
+    fail_if: "gt:0"
+    action: "notify"
+
+  - id: missing_company_id_columns
+    severity: high
+    sql: "select count(*) from information_schema.tables t where t.table_type='BASE TABLE' and t.table_schema not in ('pg_catalog','information_schema') and not exists (select 1 from information_schema.columns c where c.table_schema=t.table_schema and c.table_name=t.table_name and c.column_name='company_id')"
+    fail_if: "gt:0"
+    action: "notify"

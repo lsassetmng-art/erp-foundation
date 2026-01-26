@@ -1,0 +1,12 @@
+ALTER TABLE system.ai_signal ENABLE ROW LEVEL SECURITY;
+ALTER TABLE system.ai_task ENABLE ROW LEVEL SECURITY;
+ALTER TABLE system.db_session ENABLE ROW LEVEL SECURITY;
+ALTER TABLE system.exec_command ENABLE ROW LEVEL SECURITY;
+ALTER TABLE system.exec_run_request ENABLE ROW LEVEL SECURITY;
+ALTER TABLE system.loop_config ENABLE ROW LEVEL SECURITY;
+ALTER TABLE system.operation_log ENABLE ROW LEVEL SECURITY;
+CREATE POLICY p_ai_signal_all ON system.ai_signal USING (true) WITH CHECK (true);
+CREATE POLICY p_killswitch_read ON system.runtime_killswitch FOR SELECT USING (true);
+CREATE POLICY p_loop_config_open ON system.loop_config FOR SELECT USING (true);
+CREATE POLICY p_loop_config_owner ON system.loop_config USING (true) WITH CHECK (true);
+ALTER TABLE system.runtime_killswitch ENABLE ROW LEVEL SECURITY;

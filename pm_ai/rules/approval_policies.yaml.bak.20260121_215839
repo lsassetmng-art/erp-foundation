@@ -1,0 +1,33 @@
+# =====================================================
+# Approval Policies Master
+# =====================================================
+
+p_sales_permission_override:
+  domain: sales
+  description: "販売条件の特例変更"
+  approval_required: true
+  approver_role: sales_manager
+  max_retry: 0
+
+p_purchase_high_amount:
+  domain: purchase
+  description: "高額購買の承認"
+  approval_required: true
+  approver_role: purchase_manager
+  max_retry: 1
+
+p_accounting_adjustment:
+  domain: accounting
+  description: "会計調整仕訳"
+  approval_required: true
+  approver_role: accounting_manager
+  max_retry: 0
+
+
+p_none:
+  domain: common
+  description: "承認不要（自動実行）"
+  approval_required: false
+  approver_role: none
+  max_retry: 0
+

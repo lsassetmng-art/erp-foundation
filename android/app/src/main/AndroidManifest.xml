@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lsam.erp">
+
+    <!-- ============================= -->
+    <!-- Permissions -->
+    <!-- ============================= -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- ============================= -->
+    <!-- Application -->
+    <!-- ============================= -->
+    <application
+        android:allowBackup="true"
+        android:label="ERP"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true">
+
+        <!-- ============================= -->
+        <!-- Main Activity（既存） -->
+        <!-- ※ 既存クラス名に合わせて必要なら変更 -->
+        <!-- ============================= -->
+        <activity
+            android:name="com.lsam.erp.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- ============================= -->
+        <!-- Approval WebView Activity -->
+        <!-- ============================= -->
+        <activity
+            android:name="com.lsam.erp.approval.ApprovalWebViewActivity"
+            android:exported="true">
+
+            <!-- Deep Link: 承認URL -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- https://your-domain/approval.html?request_id=xxx -->
+                <data
+                    android:scheme="https"
+                    android:host="YOUR-DOMAIN"
+                    android:path="/approval.html" />
+            </intent-filter>
+
+        </activity>
+
+    </application>
+
+</manifest>

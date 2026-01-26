@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Governance Approval UI</title>
+<style>
+body{font-family:system-ui, sans-serif; margin:16px;}
+.card{border:1px solid #ddd; border-radius:12px; padding:12px; margin:10px 0;}
+.row{display:flex; gap:8px; flex-wrap:wrap;}
+.badge{padding:2px 8px; border-radius:999px; background:#eee; font-size:12px;}
+button{padding:8px 10px; border-radius:10px; border:1px solid #ccc; background:#fafafa;}
+pre{white-space:pre-wrap; background:#f7f7f7; padding:10px; border-radius:10px; overflow:auto;}
+input{padding:8px; border-radius:10px; border:1px solid #ccc; width:100%;}
+</style>
+</head>
+<body>
+<h2>Governance Approval UI（ローカル）</h2>
+<p>このUIは <b>Termux端末のローカル用</b>（DB直叩きはしません）。操作は下のコマンドで実施。</p>
+
+<div class="card">
+  <div class="row">
+    <span class="badge">一覧</span>
+    <code>psql "$DATABASE_URL" -c "select approval_id,status,title,confidence,risk_score,dryrun_status,created_at from governance.policy_approval_queue order by created_at desc limit 20"</code>
+  </div>
+  <div class="row">
+    <span class="badge">承認</span>
+    <code>$ERP_HOME/bin/70_approve.sh &lt;approval_id&gt;</code>
+  </div>
+  <div class="row">
+    <span class="badge">却下</span>
+    <code>$ERP_HOME/bin/71_reject.sh &lt;approval_id&gt; "reason"</code>
+  </div>
+  <div class="row">
+    <span class="badge">ダッシュボード</span>
+    <code>psql "$DATABASE_URL" -c "select * from governance.v_ops_dashboard"</code>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Android UI（雛形）</h3>
+  <p>WebViewでこのページを表示するだけの最小テンプレは <code>$ERP_HOME/android_templates</code> に出力済み。</p>
+</div>
+
+<div class="card">
+  <h3>Auto運用</h3>
+  <pre>
+- autonomy を auto にすると、pm_loop が毎周:
+  1) 自動承認→apply_queue投入 (73)
+  2) apply_worker 実行 (既存 52)
+  3) 学習反映で閾値調整 (74)
+  4) SLA監視・通知 (80)
+  </pre>
+</div>
+</body>
+</html>

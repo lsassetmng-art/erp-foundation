@@ -1,0 +1,24 @@
+name: Supabase Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+
+      - name: Deploy Edge Functions
+        run: |
+          supabase functions deploy stripe-webhook
+          supabase functions deploy send-invoice
+          supabase functions deploy public-site
+
+      - name: Apply SQL migrations
+        run: |
+          supabase db push

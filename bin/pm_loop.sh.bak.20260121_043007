@@ -1,0 +1,32 @@
+#!/bin/sh
+set -eu
+
+FOUND="$HOME/erp-foundation"
+BIN="$FOUND/bin"
+LOGS="$FOUND/logs"
+
+SUMMARY="$BIN/layer2_ci_summary.sh"
+LOGFILE="$LOGS/pm_loop.log"
+
+echo "▶ pm_loop start"
+
+# --- Layer2 pre-check ---
+if [ ! -x "$SUMMARY" ]; then
+  echo "❌ layer2 summary not found"
+  exit 90
+fi
+
+L2_LINE="$($SUMMARY)" || {
+  code=$?
+  echo "❌ Layer2 check failed code=$code"
+  exit "$code"
+}
+
+echo "▶ Layer2: $L2_LINE"
+echo "$(date '+%Y-%m-%d %H:%M:%S') $L2_LINE" >> "$LOGFILE"
+
+# --- placeholder for business execution ---
+echo "▶ pm_loop core execution (placeholder)"
+
+echo "▶ pm_loop end"
+exit 0

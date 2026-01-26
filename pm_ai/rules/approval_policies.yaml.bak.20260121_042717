@@ -1,0 +1,58 @@
+version: 1
+purpose: "Cross-domain approval policy DSL (Layer2 common)"
+
+# Notes:
+# - Policies are referenced by business events.
+# - external_impact=true should always require approval.
+# - Thresholds below are defaults; adjust per your business rules.
+
+policies:
+  - policy_id: "p_none"
+    description: "No approval required"
+    requires_approval: false
+
+  - policy_id: "p_sales_discount_exception"
+    description: "Discount/exception price requires PM approval"
+    requires_approval: true
+    conditions:
+      any:
+        - field: "discount_rate"
+          op: ">"
+          value: 0.20
+        - field: "price_override"
+          op: "=="
+          value: true
+    approver_role: "pm"
+
+  - policy_id: "p_sales_high_amount"
+    description: "High amount order requires PM approval"
+    requires_approval: true
+    conditions:
+      any:
+        - field: "total_amount"
+          op: ">="
+          value: 1000000
+    approver_role: "pm"
+
+  - policy_id: "p_sales_permission_override"
+    description: "Permission override / exceptional operation requires PM approval"
+    requires_approval: true
+    conditions:
+      any:
+        - field: "permission_override"
+          op: "=="
+          value: true
+        - field: "actor_privilege_mismatch"
+          op: "=="
+          value: true
+    approver_role: "pm"
+
+  - policy_id: "p_external_impact_always"
+    description: "Any external-impact event requires PM approval"
+    requires_approval: true
+    conditions:
+      any:
+        - field: "external_impact"
+          op: "=="
+          value: true
+    approver_role: "pm"

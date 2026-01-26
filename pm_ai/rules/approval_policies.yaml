@@ -1,0 +1,29 @@
+# Common / Sales approval policies (single source)
+
+p_none:
+  domain: common
+  description: "承認不要（自動実行）"
+  approval_required: false
+  approver_role: none
+  max_retry: 0
+
+p_sales_permission_override:
+  domain: sales
+  description: "販売条件の例外承認"
+  approval_required: true
+  approver_role: sales_manager
+  max_retry: 1
+
+p_sales_discount_exception:
+  domain: sales
+  description: "値引き例外承認"
+  approval_required: true
+  approver_role: sales_manager
+  max_retry: 1
+
+p_sales_high_amount:
+  domain: sales
+  description: "高額受注承認"
+  approval_required: true
+  approver_role: sales_manager
+  max_retry: 1

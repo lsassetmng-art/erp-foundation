@@ -1,0 +1,13 @@
+name: erp-audit-ci
+on:
+  push:
+  schedule:
+    - cron: "*/10 * * * *"
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run audit CI one-liner
+        run: |
+          bash erp-audit/bin/ci_one_liner.sh

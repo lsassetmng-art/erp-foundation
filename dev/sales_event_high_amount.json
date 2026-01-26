@@ -1,0 +1,9 @@
+{
+  "event_type": "sales",
+  "order_id": "DEV-ORDER-9999999",
+  "amount": 9999999,
+  "currency": "JPY",
+  "discount_rate": 0,
+  "external_impact": true,
+  "created_at": "2026-01-22T05:10:00+09:00"
+}

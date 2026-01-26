@@ -1,0 +1,14 @@
+# ---- Supabase ----
+SUPABASE_URL="https://YOUR_PROJECT.supabase.co"
+SUPABASE_SERVICE_ROLE_KEY="YOUR_SERVICE_ROLE_KEY"
+
+# ---- Stripe Webhook ----
+STRIPE_SECRET_KEY="sk_live_xxx"
+STRIPE_WEBHOOK_SECRET="whsec_xxx"
+
+# ---- Email (Resend) ----
+RESEND_API_KEY="re_xxx"
+MAIL_FROM="billing@yourdomain.com"
+
+# ---- Public Site ----
+PUBLIC_BASE_URL="https://yourdomain.com"  # invoice link in email (optional)

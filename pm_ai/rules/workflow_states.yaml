@@ -1,0 +1,45 @@
+version: 1
+purpose: "Cross-domain workflow states for ERP events (Layer2 common)"
+
+states:
+  - draft
+  - submitted
+  - approved
+  - rejected
+  - expired
+  - executed
+  - failed
+  - canceled
+  - closed
+
+transitions:
+  - from: draft
+    to: submitted
+    rule: "actor submits for execution or approval"
+  - from: submitted
+    to: approved
+    rule: "approval granted (if required)"
+  - from: submitted
+    to: rejected
+    rule: "approval rejected"
+  - from: submitted
+    to: expired
+    rule: "approval timeout"
+  - from: approved
+    to: executed
+    rule: "execution completes"
+  - from: approved
+    to: failed
+    rule: "execution failed"
+  - from: executed
+    to: closed
+    rule: "business lifecycle completed"
+  - from: draft
+    to: canceled
+    rule: "actor cancels before submit"
+  - from: submitted
+    to: canceled
+    rule: "actor cancels while pending (if allowed by domain rule)"
+  - from: approved
+    to: canceled
+    rule: "cancel after approval (domain-specific; often requires new approval)"

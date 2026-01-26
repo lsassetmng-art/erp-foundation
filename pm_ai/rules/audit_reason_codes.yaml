@@ -1,0 +1,37 @@
+# =====================================================
+# Audit Reason Codes (Official Master)
+# =====================================================
+
+# ---- Common ----
+COMMON_MISSING_RULE:
+  severity: ng
+  description: "必須ルールが未定義"
+
+COMMON_DIRTY_TREE:
+  severity: ng
+  description: "git working tree が dirty"
+
+COMMON_UNAPPROVED_EXECUTION:
+  severity: critical
+  description: "PM承認なしで実行された"
+
+# ---- Sales ----
+SALES_PRICE_OVERRIDE:
+  severity: warn
+  description: "販売価格が規定外で上書き"
+
+# ---- Inventory ----
+INVENTORY_NEGATIVE_STOCK:
+  severity: ng
+  description: "在庫がマイナス"
+
+# ---- Purchase ----
+PURCHASE_NO_APPROVAL:
+  severity: critical
+  description: "購買承認なし"
+
+# ---- Accounting ----
+ACCOUNTING_UNBALANCED_JOURNAL:
+  severity: critical
+  description: "仕訳不整合"
+

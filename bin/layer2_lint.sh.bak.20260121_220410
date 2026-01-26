@@ -1,0 +1,41 @@
+#!/bin/sh
+set -eu
+
+FOUND="$HOME/erp-foundation"
+RULES="$FOUND/pm_ai/rules"
+
+WF="$RULES/workflow_states.yaml"
+AP="$RULES/approval_policies.yaml"
+RC="$RULES/audit_reason_codes.yaml"
+
+FILES="
+$HOME/erp-sales/specs/layer2/events_sales.yaml
+$HOME/erp-shipping/specs/layer2/events_shipping.yaml
+$HOME/erp-billing/specs/layer2/events_billing.yaml
+$HOME/erp-accounting/specs/layer2/events_accounting.yaml
+"
+
+fail() { echo "❌ L2 LINT FAILED: $1"; exit "${2:-40}"; }
+
+[ -f "$WF" ] || fail "missing workflow_states.yaml" 41
+[ -f "$AP" ] || fail "missing approval_policies.yaml" 42
+[ -f "$RC" ] || fail "missing audit_reason_codes.yaml" 43
+
+POLICY_IDS="$(grep '^[[:space:]]*- policy_id:' "$AP" | awk '{print $3}' | tr -d '"' | sort -u)"
+
+for F in $FILES; do
+  [ -f "$F" ] || continue
+
+  grep -q '^version:' "$F" || fail "$F: missing version"
+  grep -q '^domain:' "$F"  || fail "$F: missing domain"
+  grep -q '^[[:space:]]*- event_key:' "$F" || fail "$F: no event_key"
+  grep -q 'approval_policy_id:' "$F" || fail "$F: no approval_policy_id"
+  grep -q 'external_impact:' "$F" || fail "$F: no external_impact"
+
+  for pid in $(grep 'approval_policy_id:' "$F" | awk '{print $2}' | tr -d '"' | sort -u); do
+    echo "$POLICY_IDS" | grep -qx "$pid" || fail "$F: unknown approval_policy_id=$pid"
+  done
+done
+
+echo "✔ L2 lint OK (sales/shipping/billing/accounting)"
+exit 0

@@ -1,0 +1,51 @@
+#!/bin/sh
+set -eu
+
+FOUND="$HOME/erp-foundation"
+SALES="$HOME/erp-sales"
+
+WF="$FOUND/pm_ai/rules/workflow_states.yaml"
+AP="$FOUND/pm_ai/rules/approval_policies.yaml"
+SE="$SALES/specs/layer2/events_sales.yaml"
+
+fail() { echo "❌ L2 LINT FAILED: $1"; exit "${2:-40}"; }
+
+[ -f "$WF" ] || fail "missing workflow_states.yaml" 41
+[ -f "$AP" ] || fail "missing approval_policies.yaml" 42
+[ -f "$SE" ] || fail "missing sales events_sales.yaml" 43
+
+# --- workflow_states.yaml basic checks ---
+grep -q '^version:' "$WF" || fail "workflow_states.yaml: missing version" 44
+grep -q '^states:'  "$WF" || fail "workflow_states.yaml: missing states" 45
+grep -q '^transitions:' "$WF" || fail "workflow_states.yaml: missing transitions" 46
+
+states_cnt=$(grep -E '^[[:space:]]*-[[:space:]]*[a-z_]+' "$WF" | awk 'NR<=100{c++} END{print c+0}')
+[ "$states_cnt" -ge 5 ] || fail "workflow_states.yaml: too few states" 47
+
+# --- approval_policies.yaml basic checks ---
+grep -q '^version:' "$AP" || fail "approval_policies.yaml: missing version" 50
+grep -q '^policies:' "$AP" || fail "approval_policies.yaml: missing policies" 51
+grep -q '^[[:space:]]*- policy_id:' "$AP" || fail "approval_policies.yaml: no policy_id" 52
+
+# collect policy_ids
+POLICY_IDS="$(grep '^[[:space:]]*- policy_id:' "$AP" | awk '{print $3}' | tr -d '"' | sort -u)"
+[ -n "$POLICY_IDS" ] || fail "approval_policies.yaml: empty policy_id set" 53
+
+# --- events_sales.yaml basic checks ---
+grep -q '^version:' "$SE" || fail "events_sales.yaml: missing version" 60
+grep -q '^domain:'  "$SE" || fail "events_sales.yaml: missing domain" 61
+grep -q '^events:'  "$SE" || fail "events_sales.yaml: missing events" 62
+grep -q '^[[:space:]]*- event_key:' "$SE" || fail "events_sales.yaml: no event_key" 63
+grep -q 'approval_policy_id:' "$SE" || fail "events_sales.yaml: no approval_policy_id" 64
+grep -q 'external_impact:' "$SE" || fail "events_sales.yaml: no external_impact" 65
+grep -q 'workflow:' "$SE" || fail "events_sales.yaml: no workflow" 66
+
+# validate approval_policy_id references exist
+MISSING=0
+for pid in $(grep 'approval_policy_id:' "$SE" | awk '{print $2}' | tr -d '"' | sort -u); do
+  echo "$POLICY_IDS" | grep -qx "$pid" || { echo "❌ unknown approval_policy_id in events: $pid"; MISSING=1; }
+done
+[ "$MISSING" -eq 0 ] || fail "events_sales.yaml: unknown approval_policy_id reference(s)" 67
+
+echo "✔ L2 lint OK"
+exit 0
