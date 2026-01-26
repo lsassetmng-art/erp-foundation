@@ -1,0 +1,22 @@
+package com.lsam.MoneySelfManager.activities.admin;
+
+import android.content.Intent;
+import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+import com.lsam.MoneySelfManager.R;
+import com.lsam.MoneySelfManager.utils.AdminGuard;
+
+public class AdminMenuActivity extends AppCompatActivity {
+    protected void onCreate(Bundle b) {
+        super.onCreate(b);
+        setContentView(R.layout.activity_admin_menu);
+        if (!AdminGuard.require(this)) return;
+
+        findViewById(R.id.btnApproval).setOnClickListener(v ->
+            startActivity(new Intent(this, ApprovalListActivity.class)));
+        findViewById(R.id.btnKillSwitch).setOnClickListener(v ->
+            startActivity(new Intent(this, KillSwitchActivity.class)));
+        findViewById(R.id.btnAlert).setOnClickListener(v ->
+            startActivity(new Intent(this, AlertListActivity.class)));
+    }
+}

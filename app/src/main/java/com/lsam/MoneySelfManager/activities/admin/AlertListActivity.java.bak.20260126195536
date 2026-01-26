@@ -1,0 +1,39 @@
+package com.lsam.MoneySelfManager.activities.admin;
+
+import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import androidx.appcompat.app.AppCompatActivity;
+import com.lsam.MoneySelfManager.R;
+import com.lsam.MoneySelfManager.repositories.AdminOpsRepository;
+import com.lsam.MoneySelfManager.utils.AdminGuard;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.util.ArrayList;
+
+public class AlertListActivity extends AppCompatActivity {
+    protected void onCreate(Bundle b){
+        super.onCreate(b);
+        setContentView(R.layout.activity_alert_list);
+        if (!AdminGuard.require(this)) return;
+
+        ListView list = findViewById(R.id.listAlert);
+        ArrayList<String> items = new ArrayList<>();
+        ArrayAdapter<String> ad = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
+        list.setAdapter(ad);
+
+        String companyId = getSharedPreferences("session", MODE_PRIVATE).getString("company_id","");
+
+        new Thread(() -> {
+            try {
+                JSONArray arr = new JSONArray(AdminOpsRepository.listAlerts(companyId));
+                items.clear();
+                for (int i=0;i<arr.length();i++){
+                    JSONObject o=arr.getJSONObject(i);
+                    items.add(o.optString("severity")+" "+o.optString("alert_type"));
+                }
+                runOnUiThread(ad::notifyDataSetChanged);
+            } catch(Exception e){}
+        }).start();
+    }
+}

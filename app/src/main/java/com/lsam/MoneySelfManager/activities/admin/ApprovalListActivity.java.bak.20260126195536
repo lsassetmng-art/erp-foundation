@@ -1,0 +1,69 @@
+package com.lsam.MoneySelfManager.activities.admin;
+
+import android.app.AlertDialog;
+import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import androidx.appcompat.app.AppCompatActivity;
+import com.lsam.MoneySelfManager.R;
+import com.lsam.MoneySelfManager.repositories.AdminOpsRepository;
+import com.lsam.MoneySelfManager.utils.AdminGuard;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.util.ArrayList;
+
+public class ApprovalListActivity extends AppCompatActivity {
+    protected void onCreate(Bundle b) {
+        super.onCreate(b);
+        setContentView(R.layout.activity_approval_list);
+        if (!AdminGuard.require(this)) return;
+
+        ListView list = findViewById(R.id.listApproval);
+        ArrayList<JSONObject> rows = new ArrayList<>();
+        ArrayList<String> labels = new ArrayList<>();
+        ArrayAdapter<String> ad = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, labels);
+        list.setAdapter(ad);
+
+        String companyId = getSharedPreferences("session", MODE_PRIVATE).getString("company_id","");
+
+        new Thread(() -> {
+            try {
+                JSONArray arr = new JSONArray(AdminOpsRepository.listApprovals(companyId));
+                rows.clear(); labels.clear();
+                for (int i=0;i<arr.length();i++){
+                    JSONObject o = arr.getJSONObject(i);
+                    rows.add(o);
+                    labels.add("#"+o.getLong("approval_request_id")+" "+o.optString("request_type")+" "+o.optString("title"));
+                }
+                runOnUiThread(ad::notifyDataSetChanged);
+            } catch (Exception e) {}
+        }).start();
+
+        list.setOnItemClickListener((p,v,i,id)->{
+            JSONObject o = rows.get(i);
+            long aid = o.optLong("approval_request_id");
+            new AlertDialog.Builder(this)
+                .setTitle("Approval")
+                .setItems(new String[]{"Approve","Reject"}, (d,w)->{
+                    if (w==0) {
+                        new Thread(()->{
+                            try { AdminOpsRepository.approve(aid,"admin"); finish(); }
+                            catch(Exception e){}
+                        }).start();
+                    } else {
+                        new AlertDialog.Builder(this)
+                            .setTitle("Reject reason")
+                            .setView(new android.widget.EditText(this))
+                            .setPositiveButton("OK",(dd,ww)->{
+                                android.widget.EditText et=(android.widget.EditText)((AlertDialog)dd).findViewById(android.R.id.edit);
+                                String r=et!=null?et.getText().toString():"";
+                                new Thread(()->{
+                                    try { AdminOpsRepository.reject(aid,"admin",r); finish(); }
+                                    catch(Exception e){}
+                                }).start();
+                            }).show();
+                    }
+                }).show();
+        });
+    }
+}

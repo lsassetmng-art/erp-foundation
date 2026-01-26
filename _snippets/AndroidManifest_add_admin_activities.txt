@@ -1,0 +1,3 @@
+<!-- AndroidManifest.xml の <application> 内に追加 -->
+<activity android:name="com.lsam.MoneySelfManager.activities.admin.OpsDashboardActivity" />
+<activity android:name="com.lsam.MoneySelfManager.activities.admin.ApprovalListActivity" />

@@ -1,0 +1,38 @@
+package com.lsam.MoneySelfManager.activities.admin;
+
+import android.os.Bundle;
+import android.widget.Switch;
+import androidx.appcompat.app.AppCompatActivity;
+import com.lsam.MoneySelfManager.R;
+import com.lsam.MoneySelfManager.repositories.AdminOpsRepository;
+import com.lsam.MoneySelfManager.utils.AdminGuard;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+public class KillSwitchActivity extends AppCompatActivity {
+    protected void onCreate(Bundle b){
+        super.onCreate(b);
+        setContentView(R.layout.activity_kill_switch);
+        if (!AdminGuard.require(this)) return;
+
+        Switch sw = findViewById(R.id.swKill);
+        String companyId = getSharedPreferences("session", MODE_PRIVATE).getString("company_id","");
+
+        new Thread(() -> {
+            try {
+                JSONArray a = new JSONArray(AdminOpsRepository.getKillSwitch(companyId));
+                if (a.length()>0) {
+                    JSONObject o=a.getJSONObject(0);
+                    runOnUiThread(()->sw.setChecked(o.optBoolean("is_on")));
+                }
+            } catch(Exception e){}
+        }).start();
+
+        sw.setOnCheckedChangeListener((b1,on)->{
+            new Thread(()->{
+                try { AdminOpsRepository.setKillSwitch(companyId,on,on?"manual":"resume"); }
+                catch(Exception e){}
+            }).start();
+        });
+    }
+}

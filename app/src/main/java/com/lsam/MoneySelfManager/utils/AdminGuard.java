@@ -1,0 +1,19 @@
+package com.lsam.MoneySelfManager.utils;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.widget.Toast;
+
+public final class AdminGuard {
+    private AdminGuard(){}
+
+    public static void require(Activity a) {
+        SharedPreferences sp = a.getSharedPreferences("session", Context.MODE_PRIVATE);
+        boolean isAdmin = sp.getBoolean("is_admin", false);
+        if (!isAdmin) {
+            Toast.makeText(a, "管理者専用です", Toast.LENGTH_LONG).show();
+            a.finish();
+        }
+    }
+}
