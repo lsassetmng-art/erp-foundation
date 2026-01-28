@@ -1,0 +1,12 @@
+#!/data/data/com.termux/files/usr/bin/bash
+set -e
+
+ROOT="$HOME/erp-foundation"
+
+if [ ! -d "$ROOT" ]; then
+  echo "ERROR: erp-foundation not found"
+  exit 1
+fi
+
+cd "$ROOT"
+exec ./scripts/full_generate.sh
