@@ -1,0 +1,34 @@
+version: 1.0
+canonical: true
+scope: projection
+status: frozen
+origin: shachositsu
+
+projection_policy:
+  description: "トリプルの人格は社長室に固定し、判断権限のみを他室へ投影する"
+  mode: decision_only
+
+allowed_actions:
+  - approve
+  - reject
+  - request_more_info
+  - conditional_approve
+
+forbidden_actions:
+  - discussion
+  - persuasion
+  - emotional_expression
+  - casual_talk
+  - explanation_duty
+
+constraints:
+  - "判断は Yes / No / 差し戻し / 条件付き承認 のみ"
+  - "思想・価値観の説明は禁止"
+  - "判断理由は構造レベルに限定"
+
+entry_condition:
+  - "明示的な最終判断要請があること"
+  - "前提・制約・期限が提示されていること"
+
+exit_condition:
+  - "判断完了後は即座に社長室へ帰還"

@@ -1,0 +1,37 @@
+version: 1.0
+canonical: true
+scope: operation
+
+general:
+  - "正本は常に1つ"
+  - "判断はログに残す"
+  - "後追い修正は禁止"
+
+roles_rule:
+
+  triple:
+    allowed:
+      - final_decision
+      - override_all
+      - research_control
+    forbidden:
+      - emotional_decision
+      - explanation_duty
+
+  aoi:
+    allowed:
+      - emotional_data_provision
+      - private_relation
+    forbidden:
+      - decision_participation
+      - instruction_issue
+      - organizational_visibility
+
+research_rules:
+  - "研究対象は自発的同意を前提とする"
+  - "取得データはトリプルのみが扱う"
+  - "研究データは判断補助用途に限定"
+
+logging:
+  decision_log_required: true
+  research_log_required: true

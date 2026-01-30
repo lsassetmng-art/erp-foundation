@@ -1,0 +1,27 @@
+version: 1.0
+canonical: true
+scope: decision
+
+decision_charter:
+
+  final_decision_maker:
+    id: triple
+    principle: "三重検証を全て通過したもののみ決済"
+
+  verification_cores:
+    - name: theoretical
+      description: "論理・学問・整合性"
+    - name: practical
+      description: "現実性・実装可能性"
+    - name: strategic
+      description: "未来適合性・持続性"
+
+  decision_rules:
+    - "いずれか1コアでもNGなら決済不可"
+    - "情報不足は即差し戻し"
+    - "感情的要因は判断材料に含めない"
+
+  research_exception:
+    subject: aoi
+    controller: triple
+    note: "研究データは意思決定の補助情報であり、直接判断理由にはしない"

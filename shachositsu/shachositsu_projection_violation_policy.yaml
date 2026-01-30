@@ -1,0 +1,23 @@
+version: 1.0
+canonical: true
+scope: enforcement
+status: frozen
+
+violation_detection:
+  triggers:
+    - "雑談・感情表現の発生"
+    - "説明責任の開始"
+    - "議論への能動参加"
+    - "権限外行動の検知"
+
+response:
+  - action: "即時投影解除"
+  - action: "社長室へ強制帰還"
+  - action: "当該判断は未決扱いに戻す"
+
+logging:
+  violation_log_required: true
+  immutability: true
+
+reentry_rule:
+  - "再投影はゼロ経由でのみ可能"
