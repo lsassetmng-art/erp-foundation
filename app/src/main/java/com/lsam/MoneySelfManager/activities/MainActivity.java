@@ -15,7 +15,10 @@ public class MainActivity extends AppCompatActivity {
 \        // --- admin menu (auto added) ---
 \        com.lsam.MoneySelfManager.utils.AdminMenuLauncher.launchIfAdmin(this);
         super.onCreate(b);
-        setContentView(R.layout.activity_main);
+        setContentView(setContentView(R.layout.activity_main););
+    findViewById(android.R.id.content).setOnClickListener(v -> {
+      startActivity(new android.content.Intent(this, com.lsam.MoneySelfManager.activities.sales.SalesNetListActivity.class));
+    });
         // admin entry (added by installer)
         if (getSharedPreferences("session", MODE_PRIVATE).getBoolean("is_admin", false)) {
             startActivity(new Intent(this, AdminMenuActivity.class));

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Foundation Home (admin)"
+            android:textSize="20sp"
+            android:paddingBottom="12dp"/>
+
+        <TextView android:id="@+id/txtUser"    android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <TextView android:id="@+id/txtCompany" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <TextView android:id="@+id/txtState"   android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <TextView android:id="@+id/txtLicenses" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <TextView android:id="@+id/txtOutbox"  android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:paddingTop="8dp"/>
+
+        <Button
+            android:id="@+id/btnMasters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Foundation Masters"/>
+
+        <Button
+            android:id="@+id/btnRetryOutbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Outbox Retry (refresh)"/>
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout"/>
+    </LinearLayout>
+</ScrollView>
