@@ -55,6 +55,11 @@
 
         </activity>
 
+    <activity android:name="com.lsam.MoneySelfManager.activities.sales.SalesNetListActivity"/>
+    <activity android:name="com.lsam.MoneySelfManager.activities.sales.SalesNetDetailActivity"/>
+    <activity android:name="com.lsam.MoneySelfManager.activities.sales.SalesAlertListActivity"/>
+    <activity android:name="com.lsam.MoneySelfManager.activities.sales.SalesAlertDetailActivity"/>
+  
     </application>
 
 </manifest>

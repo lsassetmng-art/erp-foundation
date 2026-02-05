@@ -1,0 +1,4 @@
+<resources>
+    <string name="supabase_url"></string>
+    <string name="supabase_anon_key"></string>
+</resources>
